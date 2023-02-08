@@ -1,59 +1,42 @@
 import getSpecialAttack from '../app';
 
 const testObj = {
-  name: 'мечник', health: 10, level: 2, attack: 80, defence: 40,
+  name: 'Лучник',
+  type: 'Bowman',
+  health: 50,
+  level: 3,
+  attack: 40,
+  defence: 10,
+  special: [
+    {
+      id: 8,
+      name: 'Двойной выстрел',
+      icon: 'http://...',
+      description: 'Двойной выстрел наносит двойной урон',
+    },
+    {
+      id: 9,
+      name: 'Нокаутирующий удар',
+      icon: 'http://...',
+    },
+  ],
 };
 
-test.each([
-  [
-    testObj,
-    ['name', 'level'],
-    [
-      { key: 'name', value: 'мечник' },
-      { key: 'level', value: 2 },
-      { key: 'attack', value: 80 },
-      { key: 'defence', value: 40 },
-      { key: 'health', value: 10 },
-    ],
-  ],
-  [
-    testObj,
-    ['level', 'attack', 'health'],
-    [
-      { key: 'level', value: 2 },
-      { key: 'attack', value: 80 },
-      { key: 'health', value: 10 },
-      { key: 'defence', value: 40 },
-      { key: 'name', value: 'мечник' },
-    ],
-  ],
-])('should return a sorted array of object properties, given the second argument',
-  (obj, sortOrder, result) => {
-    expect(sortObjProps(obj, sortOrder)).toEqual(result);
-  });
+const result = [
+  {
+    id: 8,
+    name: 'Двойной выстрел',
+    description: 'Двойной выстрел наносит двойной урон',
+    icon: 'http://...',
+  },
+  {
+    id: 9,
+    name: 'Нокаутирующий удар',
+    description: 'Описание недоступно',
+    icon: 'http://...',
+  },
+];
 
-test('should return a sorted array of object properties, without the second argument', () => {
-  expect(sortObjProps(testObj)).toEqual([
-    { key: 'attack', value: 80 },
-    { key: 'defence', value: 40 },
-    { key: 'health', value: 10 },
-    { key: 'level', value: 2 },
-    { key: 'name', value: 'мечник' },
-  ]);
-});
-
-test('should return a sorted array of object properties, without inherited properties', () => {
-  const parentObject = {
-    experience: 50,
-  };
-
-  Object.setPrototypeOf(testObj, parentObject);
-
-  expect(sortObjProps(testObj, ['level'])).toEqual([
-    { key: 'level', value: 2 },
-    { key: 'attack', value: 80 },
-    { key: 'defence', value: 40 },
-    { key: 'health', value: 10 },
-    { key: 'name', value: 'мечник' },
-  ]);
+test('should return array extracted from testObject contain properties:(id, name, description, icon). If property "description" does not exist in object, must create "description = Описание недоступно"', () => {
+  expect(getSpecialAttack(testObj)).toEqual(result);
 });
