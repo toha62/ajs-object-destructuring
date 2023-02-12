@@ -1,6 +1,4 @@
-export default function getSpecialAttack(character) {
-  const { special } = character;
-
+export default function getSpecialAttack({ special }) {
   return special.map((item) => {
     const {
       id, name, description = 'Описание недоступно', icon,
